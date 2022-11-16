@@ -12,16 +12,22 @@ def search():
     soup = BeautifulSoup(req.content, 'html.parser')
     container = soup.find("div", {"id": "rso"})
     try:
-        container = container.find("div", {"class":"sh-pr__product-results"})
-    except:
-        return {"message": "not found"}
-    container = container.find_all("div", {"class": "sh-dgr__grid-result"})
+        container = container.find_all("div", {"class": "Qlx7of"})
+    except AttributeError:
+        return {"status": 404,"message": "not found"}, 404
     results = []
     for i in container:
-        link = i.find("a", {"class":"xCpuod"})
-        product_id = link['href'].split("/shopping/product/")[1].split("?")[0]
-        results.append({"product_id": product_id}) 
-    return results
+        wrapper = i.find("div", {"class":"sh-pr__product-results"})
+        wrapper = wrapper.find_all("div", {"class": "sh-dgr__grid-result"})
+        for _ in wrapper:
+            link = _.find("a", {"class":"xCpuod"})
+            try:
+                product_id = link['href'].split("/shopping/product/")[1].split("?")[0]
+                name = _.find("h3", {"class": "tAxDx"}).text
+            except:
+                continue
+            results.append({"name": name,"product_id": product_id}) 
+    return results, 200
 
 @google.route("/search/<product_id>", methods=['GET'])
 def search_by_product_id(product_id):
@@ -33,7 +39,7 @@ def search_by_product_id(product_id):
     try:
         container = container.find("tr",{"class":"sh-osd__offer-row"}).parent
     except:
-        return {"message": "not found"}
+        return {"status": 404, "message": "not found"}, 404
     results = []
     for i in container:
         price = i.find("span", {"class": "g9WBQb"})
@@ -45,4 +51,4 @@ def search_by_product_id(product_id):
         except:
             continue
         results.append({"product_name": product_name,"name": name, "price": price,"link": link})
-    return sorted(results, key=lambda x: x['price'])
+    return sorted(results, key=lambda x: x['price']), 200
