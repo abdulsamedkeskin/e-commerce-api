@@ -1,0 +1,1 @@
+user_agent = {'browser': 'firefox','platform': 'windows','mobile': False}
