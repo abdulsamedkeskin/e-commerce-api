@@ -19,5 +19,5 @@ def search():
         price = wrapper.find("div", {"data-test-id": "price-current-price"})
         link = i.find("a")['href']
         link = "https://www.hepsiburada.com" + link
-        results.append({"title": title.text, "price": price.text, "link": link})
+        results.append({"title": title.text, "price": price.text, "url": link})
     return results

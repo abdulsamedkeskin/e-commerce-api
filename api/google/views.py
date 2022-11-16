@@ -50,5 +50,5 @@ def search_by_product_id(product_id):
             price = price.text
         except:
             continue
-        results.append({"product_name": product_name,"name": name, "price": price,"link": link})
+        results.append({"product_name": product_name,"name": name, "price": price,"url": link})
     return sorted(results, key=lambda x: x['price']), 200

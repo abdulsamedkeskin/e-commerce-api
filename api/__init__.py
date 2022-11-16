@@ -6,6 +6,8 @@ def create_app():
     app.config.from_object(Config)
     from .hepsiburada import hepsiburada
     from .google import google
+    from .boyner import boyner
     app.register_blueprint(hepsiburada)
     app.register_blueprint(google)
+    app.register_blueprint(boyner)
     return app
